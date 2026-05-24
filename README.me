@@ -1,0 +1,65 @@
+
+raw
+Readme · MD
+# Portfolio — David Beneito Pastor (Beneito)
+ 
+Portfolio personal desarrollado con React, TypeScript y Tailwind CSS.
+Diseñado como un escritorio de macOS interactivo.
+ 
+---
+ 
+## Tecnologías
+ 
+- React 18 + TypeScript
+- Tailwind CSS v3
+- Vite
+---
+ 
+## Estructura
+ 
+```
+src/
+├── components/
+│   ├── Desktop.tsx            # Escritorio con archivos flotantes
+│   ├── Dock.tsx               # Barra inferior estilo macOS
+│   ├── Window.tsx             # Ventana arrastrable reutilizable
+│   └── windows/
+│       ├── AboutWindow.tsx    # Sobre mí
+│       ├── ProjectsWindow.tsx # Proyectos
+│       ├── AIWindow.tsx       # Manifiesto IA
+│       ├── CVWindow.tsx       # Curriculum
+│       └── TrashWindow.tsx    # Papelera
+├── data/
+│   └── projects.ts            # Datos de proyectos y escritorio
+└── App.tsx                    # Componente raíz
+```
+ 
+---
+ 
+## Instalación
+ 
+```bash
+npm install
+npm run dev
+```
+ 
+---
+ 
+## Personalización
+ 
+### Foto de fondo
+En `src/App.tsx` reemplaza la URL de `backgroundImage` por la tuya.
+ 
+### Proyectos
+En `src/data/projects.ts` edita los arrays `projects` y `desktopItems`.
+- `type: 'code'` muestra el icono `.git`
+- `type: 'design'` muestra el icono `.psd`
+### Iconos del Dock
+En `src/components/Dock.tsx` edita el array `DOCK_ITEMS`.
+ 
+---
+ 
+## Contacto
+ 
+- Instagram: https://www.instagram.com/glax.xyz/
+- Email: glaaxstudio@gmail.com
