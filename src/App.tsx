@@ -59,26 +59,27 @@ export default function App() {
 
   const renderWindowContent = (id: AppId) => {
     switch (id) {
-      case 'about': return <AboutWindow />;
+      case 'about':    return <AboutWindow />;
       case 'projects': return <ProjectsWindow />;
-      case 'ai': return <AIWindow />;
-      case 'cv': return <CVWindow />;
-      case 'trash': return <TrashWindow />;
-      default: return null;
+      case 'ai':       return <AIWindow />;
+      case 'cv':       return <CVWindow />;
+      case 'trash':    return <TrashWindow />;
+      default:         return null;
     }
   };
 
   return (
     <div
       className="relative w-screen h-screen overflow-hidden"
-      style={{
-        background: `#000`,
-      }}
+      style={{ background: '#000' }}
     >
+      {/* Foto de fondo */}
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: `url('https://res.cloudinary.com/dcgb3jhf3/image/upload/v1779657750/IMG_2737_jpg_bkir3x.jpg')`,
+          backgroundImage: window.innerWidth < 768
+            ? `url('https://res.cloudinary.com/dcgb3jhf3/image/upload/v1779658558/IMG_1832_jpg_s4ormz.jpg')`
+            : `url('https://res.cloudinary.com/dcgb3jhf3/image/upload/v1779657750/IMG_2737_jpg_bkir3x.jpg')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center top',
           opacity: 0.45,
@@ -86,6 +87,7 @@ export default function App() {
         }}
       />
 
+      {/* Grano */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -95,6 +97,7 @@ export default function App() {
         }}
       />
 
+      {/* Slogan */}
       <div
         className="absolute top-6 left-0 right-0 flex justify-center pointer-events-none"
         style={{ zIndex: 2 }}
@@ -104,6 +107,7 @@ export default function App() {
         </p>
       </div>
 
+      {/* Nombre */}
       <div
         className="absolute bottom-24 left-8 pointer-events-none"
         style={{ zIndex: 2 }}
@@ -112,10 +116,12 @@ export default function App() {
         <p className="text-white/5 text-[10px] tracking-widest">glax.xyz</p>
       </div>
 
+      {/* Escritorio */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 3 }}>
         <Desktop />
       </div>
 
+      {/* Ventanas */}
       {windows.map((win) => {
         const config = WINDOW_CONFIG[win.id];
         const content = renderWindowContent(win.id);

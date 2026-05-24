@@ -26,21 +26,28 @@ export default function Window({
   zIndex,
   onFocus,
 }: WindowProps) {
+  const isMobile = window.innerWidth < 768;
+
+  const effectiveWidth = isMobile ? window.innerWidth : width;
+  const effectiveHeight = isMobile ? window.innerHeight - 80 : height;
+
   const [pos, setPos] = useState({
-    x: initialX ?? Math.max(40, (window.innerWidth - width) / 2),
-    y: initialY ?? Math.max(40, (window.innerHeight - height) / 3),
+    x: isMobile ? 0 : (initialX ?? Math.max(40, (window.innerWidth - width) / 2)),
+    y: isMobile ? 0 : (initialY ?? Math.max(40, (window.innerHeight - height) / 3)),
   });
+
   const [dragging, setDragging] = useState(false);
   const dragStart = useRef({ mx: 0, my: 0, wx: 0, wy: 0 });
   const windowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (isMobile) return;
     const onMove = (e: MouseEvent) => {
       if (!dragging) return;
       const dx = e.clientX - dragStart.current.mx;
       const dy = e.clientY - dragStart.current.my;
       setPos({
-        x: Math.max(0, Math.min(window.innerWidth - width, dragStart.current.wx + dx)),
+        x: Math.max(0, Math.min(window.innerWidth - effectiveWidth, dragStart.current.wx + dx)),
         y: Math.max(0, Math.min(window.innerHeight - 100, dragStart.current.wy + dy)),
       });
     };
@@ -51,9 +58,10 @@ export default function Window({
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseup', onUp);
     };
-  }, [dragging, width]);
+  }, [dragging, effectiveWidth, isMobile]);
 
   const onMouseDown = (e: React.MouseEvent) => {
+    if (isMobile) return;
     onFocus();
     setDragging(true);
     dragStart.current = { mx: e.clientX, my: e.clientY, wx: pos.x, wy: pos.y };
@@ -66,8 +74,8 @@ export default function Window({
       style={{
         left: pos.x,
         top: pos.y,
-        width,
-        height,
+        width: effectiveWidth,
+        height: effectiveHeight,
         zIndex,
         boxShadow: '0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.08)',
         background: 'rgba(28, 28, 30, 0.92)',
@@ -81,7 +89,7 @@ export default function Window({
         style={{
           background: 'rgba(44, 44, 46, 0.95)',
           borderBottom: '1px solid rgba(255,255,255,0.06)',
-          cursor: dragging ? 'grabbing' : 'grab',
+          cursor: isMobile ? 'default' : dragging ? 'grabbing' : 'grab',
         }}
         onMouseDown={onMouseDown}
       >

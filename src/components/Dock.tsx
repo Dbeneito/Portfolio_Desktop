@@ -73,12 +73,12 @@ interface DockProps {
 export default function Dock({ openWindows, onOpen }: DockProps) {
   const [hovered, setHovered] = useState<string | null>(null);
 
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  const iconSize = isMobile ? 48 : 52;
-  const dockGap = isMobile ? 'gap-4 px-4' : 'gap-4 px-4';
+  const isMobile = window.innerWidth < 768;
+  const iconSize = isMobile ? 36 : 52;
+  const dockGap = isMobile ? 'gap-2 px-3' : 'gap-4 px-4';
 
   const getScale = (id: string) => {
-    if (hovered === id) return 1.2;
+    if (!isMobile && hovered === id) return 1.2;
     return 1;
   };
 
@@ -111,7 +111,7 @@ export default function Dock({ openWindows, onOpen }: DockProps) {
             <div key={item.id} className="flex items-end">
               {showSeparator && (
                 <div
-                  className="w-px h-10 mx-2 self-center"
+                  className="w-px h-8 mx-1 self-center"
                   style={{ background: 'rgba(255,255,255,0.2)' }}
                 />
               )}
@@ -122,18 +122,20 @@ export default function Dock({ openWindows, onOpen }: DockProps) {
                 onMouseLeave={() => setHovered(null)}
                 onClick={() => handleClick(item)}
               >
-                {/* Label tooltip */}
-                <div
-                  className="absolute -top-8 px-2 py-1 rounded-md text-xs text-white font-medium whitespace-nowrap pointer-events-none"
-                  style={{
-                    background: 'rgba(30,30,30,0.9)',
-                    backdropFilter: 'blur(8px)',
-                    opacity: hovered === item.id ? 1 : 0,
-                    transition: 'opacity 0.15s ease',
-                  }}
-                >
-                  {item.label}
-                </div>
+                {/* Label tooltip — solo desktop */}
+                {!isMobile && (
+                  <div
+                    className="absolute -top-8 px-2 py-1 rounded-md text-xs text-white font-medium whitespace-nowrap pointer-events-none"
+                    style={{
+                      background: 'rgba(30,30,30,0.9)',
+                      backdropFilter: 'blur(8px)',
+                      opacity: hovered === item.id ? 1 : 0,
+                      transition: 'opacity 0.15s ease',
+                    }}
+                  >
+                    {item.label}
+                  </div>
+                )}
 
                 {/* Icon */}
                 <div
@@ -154,7 +156,7 @@ export default function Dock({ openWindows, onOpen }: DockProps) {
                 >
                   {item.img
                     ? <img src={item.img} alt={item.label} className="w-full h-full object-contain" />
-                    : <span className="text-2xl">{item.emoji}</span>
+                    : <span className={isMobile ? 'text-lg' : 'text-2xl'}>{item.emoji}</span>
                   }
                 </div>
 
